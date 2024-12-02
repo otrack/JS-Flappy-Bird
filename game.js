@@ -1,6 +1,7 @@
 const RAD = Math.PI / 180;
 const scrn = document.getElementById("canvas");
 const sctx = scrn.getContext("2d");
+const server = 'https://localhost/'
 
 scrn.tabIndex = 1;
 scrn.addEventListener("click", () => {
@@ -270,7 +271,7 @@ const UI = {
             let sc = `SCORE :     ${this.score.curr}`;	    
             try {
 		if (this.score.once==0) {
-		    let url = `http://34.83.58.118:80/abci_query?data="best"`
+		    let url = server+`abci_query?data="best"`
 		    fetch(url)
 			.then((response) => {
 			    console.log(response);
