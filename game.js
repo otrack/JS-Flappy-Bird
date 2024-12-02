@@ -284,6 +284,7 @@ const UI = {
 			})
 			.then((data) => {
 			    this.score.best = atob(data.result.response.value);
+			    console.log(this.score.best);
 			    if (this.score.best < this.score.curr) {
 				this.score.best = this.score.curr
 				let url = server+`broadcast_tx_commit?tx="score=`+this.score.curr+`"`;
@@ -298,10 +299,10 @@ const UI = {
 					// ignore
 				    })
 				    .catch((error) => {
-					console.error('Error:', error.message);
+					// ignore
 				    });
 			    }
-			    if (this.score.best <= this.score.curr) this.score.highScore = 1;
+			    if (this.score.best == this.score.curr) this.score.highScore = 1;
 			})
 			.catch((error) => {
 			    console.error('Error:', error.message);
