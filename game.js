@@ -1,7 +1,7 @@
 const RAD = Math.PI / 180;
 const scrn = document.getElementById("canvas");
 const sctx = scrn.getContext("2d");
-const server = 'https://localhost/'
+const server = 'https://34.83.58.118:8080/'
 
 scrn.tabIndex = 1;
 scrn.addEventListener("click", () => {
@@ -260,6 +260,7 @@ const UI = {
 	sctx.strokeStyle = "#000000";
 	switch (state.curr) {
 	case state.Play:
+	    this.score.once = 0;
             sctx.lineWidth = "2";
             sctx.font = "35px Squada One";
             sctx.fillText(this.score.curr, scrn.width / 2 - 5, 50);
@@ -270,46 +271,43 @@ const UI = {
             sctx.font = "40px Squada One";
             let sc = `SCORE :     ${this.score.curr}`;	    
             try {
+		let highScore = '';
 		if (this.score.once==0) {
-		    let url = server+`abci_query?data="best"`
+		    let url = server+`abci_query?data="score"`
 		    fetch(url)
 			.then((response) => {
-			    console.log(response);
 			    if (!response.ok) {
-				console.log('Error!'); // Log the JSON data to the console
 				throw new Error(`HTTP error! Status: ${response.status}`);
 			    }
-			    console.log('Response:', !console.ok); // Log the JSON data to the console
-			    return response.json(); // Parse JSON from the response
+			    return response.json();
 			})
 			.then((data) => {
 			    this.score.best = atob(data.result.response.value);
+			    if (this.score.best < this.score.curr) {
+				this.score.best = this.score.curr
+				let url = server+`broadcast_tx_commit?tx="score=`+this.score.curr+`"`;
+				fetch(url)
+				    .then((response) => {
+					if (!response.ok) {
+					    throw new Error(`HTTP error! Status: ${response.status}`);
+					}
+					return response.json();
+				    })
+				    .then((data) => {
+					// ignore
+				    })
+				    .catch((error) => {
+					console.error('Error:', error.message);
+				    });
+			    }
+			    if (this.score.best <= this.score.curr) this.score.best = this.score.best+'!';
 			})
 			.catch((error) => {
 			    console.error('Error:', error.message);
 			});
 		    this.score.once = 1;
 		}
-		localStorage.setItem("best", this.score.best);
-		// if (this.score.best < this.score.curr) {
-		//     let params = { x: 'cometbft', y: 'rocks' }; // Example input
-		//     let url = `http://34.83.58.118:80/broadcast_tx_commit?tx="${query}"`;
-		//     let query = `${params.x}=${params.y}`; // Build query string
-		//     fetch(url,{ mode: 'no-cors' })
-		// 	.then((response) => {
-		// 	    if (!response.ok) {
-		// 		throw new Error(`HTTP error! status: ${response.status}`);
-		// 	    }
-		// 	    return response.json(); // Parse JSON response
-		// 	})
-		// 	.then((data) => {
-		// 	    console.log('Response:', data);
-		// 	})
-		// 	.catch((error) => {
-		// 	    console.error('Error:', error.message);
-		// 	});
-		// }
-		let bs = `BEST  :     ${this.score.best}`;
+		let bs = `BEST  :     ${this.score.best}` + highScore;
 		sctx.fillText(sc, scrn.width / 2 - 80, scrn.height / 2 + 0);
 		sctx.strokeText(sc, scrn.width / 2 - 80, scrn.height / 2 + 0);
 		sctx.fillText(bs, scrn.width / 2 - 80, scrn.height / 2 + 30);

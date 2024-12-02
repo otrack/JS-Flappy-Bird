@@ -1,4 +1,5 @@
 const https = require('https');
+const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
@@ -12,11 +13,11 @@ const options = {
 };
 
 // Create HTTPS server
-https.createServer((req, res) => {
+https.createServer(options, (req, res) => {
     const requested = req.url === '/' ? 'index.html' : req.url.slice(1); // Default to index.html    
 
     // Check if the request matches the proxy endpoints
-    if (requested.startsWith('tx_search') || requested.startsWith('broadcast_tx_commit')) {
+    if (requested.startsWith('broadcast_tx_commit') || requested.startsWith('abci_query') || requested.startsWith('tx_search')) {
 
 	// Proxy the request to the storage server
         const storageUrl = `${STORAGE_SERVER}/${requested}`;
@@ -27,6 +28,7 @@ https.createServer((req, res) => {
             proxyRes.on('data', (chunk) => {
                 data += chunk;
             });
+	    console.log(data);
 
             proxyRes.on('end', () => {
                 // Forward the response back to the client
@@ -40,7 +42,6 @@ https.createServer((req, res) => {
         });
 	
     } else {
-
         // Serve static files for other requests
         const filePath = path.join(__dirname, requested);
         const ext = path.extname(filePath);
