@@ -283,7 +283,7 @@ const UI = {
 			    return response.json();
 			})
 			.then((data) => {
-			    this.score.best = atob(data.result.response.value).splut(".")[0];
+			    this.score.best = atob(data.result.response.value).split(".")[0];
 			    console.log(this.score.best);
 			    if (this.score.best < this.score.curr) {
 				this.score.best = this.score.curr
