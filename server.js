@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const PORT = 8080;
-const STORAGE_SERVER = 'http://172.26.236.18:80'; // Address of the key-value store
+const STORAGE_SERVER = 'http://172.26.236.18:26657'; // Address of the key-value store
 
 // Load SSL certificates
 const options = {
