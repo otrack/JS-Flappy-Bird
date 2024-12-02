@@ -306,7 +306,7 @@ const UI = {
 			});
 		    this.score.once = 1;
 		}
-		let bs = `BEST  :     ${this.score.best}` + (this.score.best <= this.score.curr ? '!' : '');
+		let bs = `BEST  :     ${this.score.best}`;
 		sctx.fillText(sc, scrn.width / 2 - 80, scrn.height / 2 + 0);
 		sctx.strokeText(sc, scrn.width / 2 - 80, scrn.height / 2 + 0);
 		sctx.fillText(bs, scrn.width / 2 - 80, scrn.height / 2 + 30);
