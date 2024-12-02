@@ -291,7 +291,7 @@ const UI = {
 				fetch(url)
 				    .then((response) => {
 					if (!response.ok) {
-					    throw new Error(`HTTP error! Status: ${response.status}`);
+					    console.log("score already set");
 					}
 					return response.json();
 				    })
