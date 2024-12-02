@@ -226,6 +226,7 @@ const UI = {
 	curr: 0,
 	best: 0,
 	once: 0,
+	highscore: 0,
     },
     x: 0,
     y: 0,
@@ -261,6 +262,7 @@ const UI = {
 	switch (state.curr) {
 	case state.Play:
 	    this.score.once = 0;
+	    this.score.highscore = 0;
             sctx.lineWidth = "2";
             sctx.font = "35px Squada One";
             sctx.fillText(this.score.curr, scrn.width / 2 - 5, 50);
@@ -271,7 +273,6 @@ const UI = {
             sctx.font = "40px Squada One";
             let sc = `SCORE :     ${this.score.curr}`;	    
             try {
-		let highScore = '';
 		if (this.score.once==0) {
 		    let url = server+`abci_query?data="score"`
 		    fetch(url)
@@ -300,14 +301,14 @@ const UI = {
 					console.error('Error:', error.message);
 				    });
 			    }
-			    if (this.score.best <= this.score.curr) this.score.best = this.score.best+'!';
+			    if (this.score.best <= this.score.curr) this.score.highScore = 1;
 			})
 			.catch((error) => {
 			    console.error('Error:', error.message);
 			});
 		    this.score.once = 1;
 		}
-		let bs = `BEST  :     ${this.score.best}` + highScore;
+		let bs = `BEST  :     ${this.score.best}` + (highScore == 1 : '!' : '');
 		sctx.fillText(sc, scrn.width / 2 - 80, scrn.height / 2 + 0);
 		sctx.strokeText(sc, scrn.width / 2 - 80, scrn.height / 2 + 0);
 		sctx.fillText(bs, scrn.width / 2 - 80, scrn.height / 2 + 30);
