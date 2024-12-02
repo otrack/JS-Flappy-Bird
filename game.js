@@ -226,7 +226,6 @@ const UI = {
 	curr: 0,
 	best: 0,
 	once: 0,
-	highscore: 0,
     },
     x: 0,
     y: 0,
@@ -262,7 +261,6 @@ const UI = {
 	switch (state.curr) {
 	case state.Play:
 	    this.score.once = 0;
-	    this.score.highscore = 0;
             sctx.lineWidth = "2";
             sctx.font = "35px Squada One";
             sctx.fillText(this.score.curr, scrn.width / 2 - 5, 50);
@@ -302,14 +300,13 @@ const UI = {
 					// ignore
 				    });
 			    }
-			    if (this.score.best == this.score.curr) this.score.highScore = 1;
 			})
 			.catch((error) => {
 			    console.error('Error:', error.message);
 			});
 		    this.score.once = 1;
 		}
-		let bs = `BEST  :     ${this.score.best}` + (this.score.highScore == 1 ? '!' : '');
+		let bs = `BEST  :     ${this.score.best}` + (this.score.best <= this.score.curr ? '!' : '');
 		sctx.fillText(sc, scrn.width / 2 - 80, scrn.height / 2 + 0);
 		sctx.strokeText(sc, scrn.width / 2 - 80, scrn.height / 2 + 0);
 		sctx.fillText(bs, scrn.width / 2 - 80, scrn.height / 2 + 30);
