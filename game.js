@@ -308,7 +308,7 @@ const UI = {
 			});
 		    this.score.once = 1;
 		}
-		let bs = `BEST  :     ${this.score.best}` + (highScore == 1 ? '!' : '');
+		let bs = `BEST  :     ${this.score.best}` + (this.score.highScore == 1 ? '!' : '');
 		sctx.fillText(sc, scrn.width / 2 - 80, scrn.height / 2 + 0);
 		sctx.strokeText(sc, scrn.width / 2 - 80, scrn.height / 2 + 0);
 		sctx.fillText(bs, scrn.width / 2 - 80, scrn.height / 2 + 30);
