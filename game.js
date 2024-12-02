@@ -283,11 +283,11 @@ const UI = {
 			    return response.json();
 			})
 			.then((data) => {
-			    this.score.best = atob(data.result.response.value);
+			    this.score.best = atob(data.result.response.value).splut(".")[0];
 			    console.log(this.score.best);
 			    if (this.score.best < this.score.curr) {
 				this.score.best = this.score.curr
-				let url = server+`broadcast_tx_commit?tx="score=`+this.score.curr+`"`;
+				let url = server+`broadcast_tx_commit?tx="score=`+this.score.curr+"."+Date.now()+`"`;
 				fetch(url)
 				    .then((response) => {
 					if (!response.ok) {
